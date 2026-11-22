@@ -1,0 +1,24 @@
+# Python and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Generated experiment outputs (models, predictions, caches)
+Covertype_RF_LR/
+Covertype_RF_LR_MI/
+*.joblib
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+.aws/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
