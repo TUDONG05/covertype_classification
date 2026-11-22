@@ -4,8 +4,6 @@
 
 **Kết quả nổi bật:** RF sau tối ưu với 54 đặc trưng đạt **Accuracy 96,81%**, **Macro-F1 0,9435**. Khi giảm còn 20 đặc trưng, RF đạt **Accuracy 96,37%**, **Macro-F1 0,9368**.
 
-> Các số liệu dưới đây được tổng hợp từ output đã lưu trong hai notebook, không phải kết quả huấn luyện lại khi tạo repository. Điểm trong bảng làm tròn 4 chữ số thập phân; Accuracy trong bảng nằm trên thang 0–1.
-
 ## 1. Mục tiêu đề tài
 
 - Dự đoán một trong bảy lớp phủ rừng từ thông tin địa hình, thủy văn, độ che sáng, khu vực hoang dã và loại đất.
