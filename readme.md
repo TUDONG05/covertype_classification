@@ -49,6 +49,23 @@ Mười biến số gồm `Elevation`, `Aspect`, `Slope`, `Horizontal_Distance_T
 
 Phân bố Test cho thấy hai lớp đầu chiếm phần lớn quan sát, trong khi Cottonwood/Willow có ít mẫu. Vì vậy, Accuracy được báo cáo cùng Macro-F1 và Balanced Accuracy để tránh che khuất kết quả ở lớp thiểu số.
 
+### Biểu đồ khảo sát dữ liệu
+
+![Phân bố bảy lớp trên tập Train](assets/images/train-class-distribution.png)
+
+*Phân bố nhãn trên tập Train cho thấy sự mất cân bằng giữa bảy lớp.*
+
+<details>
+<summary>Xem phân bố đặc trưng, tương quan và độ cao theo lớp</summary>
+
+![Phân bố mười đặc trưng số trên Train](assets/images/train-numeric-distributions.png)
+
+![Tương quan Pearson giữa các đặc trưng số trên Train](assets/images/train-correlation.png)
+
+![Độ cao theo lớp trên mẫu 15.000 dòng Train](assets/images/train-elevation-by-class.png)
+
+</details>
+
 ## 3. Hai notebook đã triển khai
 
 | Notebook | Vai trò |
@@ -136,6 +153,30 @@ Cấu hình tốt nhất của LR: `C=100`, `class_weight=None`. RF: `n_estimato
 
 Cấu hình tốt nhất của LR: `C=1000`, `class_weight=None`. RF chọn cùng cấu hình tốt nhất như bản 54 biến. Trong từng notebook, RF được chọn theo CV Macro-F1.
 
+### Ma trận nhầm lẫn trên Test
+
+Các ma trận được chuẩn hóa theo lớp thực: mỗi hàng biểu diễn tỷ lệ dự đoán của một lớp. Giá trị trên đường chéo là Recall của lớp đó. `before` và `after` trên hình tương ứng với trước và sau tối ưu siêu tham số.
+
+**Toàn bộ 54 đặc trưng**
+
+| LR cơ sở | LR tối ưu |
+|---|---|
+| ![Ma trận nhầm lẫn LR cơ sở với 54 biến](assets/images/full-lr-before-confusion-matrix.png) | ![Ma trận nhầm lẫn LR tối ưu với 54 biến](assets/images/full-lr-after-confusion-matrix.png) |
+
+| RF cơ sở | RF tối ưu |
+|---|---|
+| ![Ma trận nhầm lẫn RF cơ sở với 54 biến](assets/images/full-rf-before-confusion-matrix.png) | ![Ma trận nhầm lẫn RF tối ưu với 54 biến](assets/images/full-rf-after-confusion-matrix.png) |
+
+**Chọn 20 đặc trưng bằng Mutual Information**
+
+| LR cơ sở | LR tối ưu |
+|---|---|
+| ![Ma trận nhầm lẫn LR cơ sở với 20 biến](assets/images/mi-lr-before-confusion-matrix.png) | ![Ma trận nhầm lẫn LR tối ưu với 20 biến](assets/images/mi-lr-after-confusion-matrix.png) |
+
+| RF cơ sở | RF tối ưu |
+|---|---|
+| ![Ma trận nhầm lẫn RF cơ sở với 20 biến](assets/images/mi-rf-before-confusion-matrix.png) | ![Ma trận nhầm lẫn RF tối ưu với 20 biến](assets/images/mi-rf-after-confusion-matrix.png) |
+
 ### Chất lượng theo từng lớp của RF tối ưu
 
 Các giá trị sau được chép từ classification report, làm tròn hai chữ số như output gốc.
@@ -196,10 +237,22 @@ Soil_Type22, Soil_Type23, Soil_Type29, Soil_Type38, Soil_Type39
 
 Trong bảng MI đã lưu, `Elevation` có điểm cao nhất (0,458308), tiếp theo là `Wilderness_Area4` (0,146734) và `Horizontal_Distance_To_Roadways` (0,088832). MI là tiêu chí liên hệ đơn biến với nhãn; không đồng nhất với importance của RF và không chứng minh quan hệ nhân quả. Bộ biến có thể khác ở từng fold vì selector được fit riêng.
 
+### Độ quan trọng đặc trưng của RF tối ưu
+
+![Mười lăm đặc trưng quan trọng nhất của RF với 54 biến](assets/images/full-rf-feature-importance.png)
+
+*Bản 54 biến: 15 đặc trưng có độ quan trọng cao nhất trong RF tối ưu.*
+
+![Độ quan trọng của hai mươi đặc trưng được MI chọn trong RF](assets/images/mi-rf-feature-importance.png)
+
+*Bản 20 biến: độ quan trọng do RF tính trên các biến đã chọn bằng MI; đây không phải biểu đồ điểm MI.*
+
 ## 7. Cấu trúc repository
 
 ```text
 covertype_classification/
+├── assets/
+│   └── images/                       # Biểu đồ trích từ output notebook
 ├── LR_RF_Covertype.ipynb
 ├── LR_RF_Covertype_FeatureSelection.ipynb
 ├── readme.md
