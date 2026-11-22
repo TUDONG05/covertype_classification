@@ -62,6 +62,29 @@ Trong cả hai notebook, hậu tố **`before`/`after` là trước/sau tối ư
 
 ## 4. Thiết kế thực nghiệm
 
+### Sơ đồ quy trình thực nghiệm
+
+```mermaid
+flowchart LR
+    A("1. Tải và kiểm tra dữ liệu<br/>Covertype — 54 đặc trưng") --> B("2. Chia Train / Test<br/>Giữ riêng tập Test")
+    B --> C("3. Khảo sát dữ liệu<br/>trên Train — EDA")
+    C --> D("PHƯƠNG ÁN A<br/>Giữ nguyên 54 đặc trưng")
+    C --> E("PHƯƠNG ÁN B<br/>MI chọn 20 đặc trưng")
+    D --> F("Cross-Validation + GridSearchCV<br/>với LR và RF trên Train")
+    E --> F
+    F --> G("Đánh giá trên tập Test")
+
+    classDef step fill:#ffffff,stroke:#173b6c,color:#003366,stroke-width:1.5px;
+    class A,B,C,D,E,F,G step;
+    linkStyle 0,1,6 stroke:#173b6c,stroke-width:2px;
+    linkStyle 2,4 stroke:#ff7f0e,stroke-width:2px;
+    linkStyle 3,5 stroke:#00c853,stroke-width:2px;
+```
+
+*Quy trình thực nghiệm: tải dữ liệu → chia tập → EDA trên Train → thực hiện hai phương án đặc trưng → đánh giá chéo và tối ưu LR/RF trên Train → đánh giá cuối trên Test.*
+
+Hai nhánh tương ứng với hai notebook trong dự án. Ở phương án B, ô “MI chọn 20 đặc trưng” mô tả bước chọn biến trong pipeline: selector được fit lại trên phần huấn luyện của từng fold CV, sau đó fit trên toàn bộ Train khi refit cấu hình tốt nhất. Không chọn sẵn 20 biến trên toàn bộ Train trước CV. Tập Test được giữ riêng từ bước 2 và chỉ dùng để đánh giá cuối; hai phương án dùng cùng thiết lập chia tập 80/20 và `random_state=42`.
+
 ### Chia tập và đánh giá chéo
 
 1. Kiểm tra kích thước, nhãn, dữ liệu hữu hạn và cấu trúc các cột nhị phân.
